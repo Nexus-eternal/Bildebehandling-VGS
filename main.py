@@ -12,17 +12,17 @@ class Program():
         self.commands = commands
         files = []
         exceptions = ["examples.png", "polaroid-frame.png"]
-        print("Wellcome to ACFE!")
+        print("Wellcome to ACFE! (Amazing Consoll Foto Editor)")
         print("Choose the picture you want to edit:" + "\n")
         counter = 1
         for file in os.scandir('.'):
             if file.is_file() and file.path.split(".")[-1].lower() in ['png','jpg','jpeg']:
-                files.append(file)
                 if file.name not in exceptions:
+                    files.append(file)
                     print(f'{counter}. {file.name}')
-                counter += 1
+                    counter += 1
         print("\n")
-        file = input("File you will work with: ")
+        file = input("File you will work with (enter num): ")
         file = files[int(file)-1]
         self.file = file
 
@@ -45,7 +45,7 @@ class Program():
             print(f"{counter}. {angle}")
             counter += 1
         
-        command_angle = input("Choose angle: ")
+        command_angle = input("Choose angle (enter num): ")
         match command_angle:
             case "1":
                 rotated = im.transpose(Image.ROTATE_90)
@@ -54,7 +54,6 @@ class Program():
             case "3":
                 rotated = im.transpose(Image.ROTATE_270)
         rotated.save(f"{self.file.name}-{angles[int(command_angle) - 1]}.png")
-        rotated.show()
     
 
     def resize(self):
@@ -83,14 +82,16 @@ class Program():
 
     def mainloop(self):
         run = True
-        print("What do you want to do with picture?")
-        counter = 1
-        for command in self.commands:
-            print(f"{counter}. {command}")
-            counter += 1
         while run:
-            command = int(input("File you will work with: "))
+            print("What do you want to do with picture?")
+            counter = 1
+            for command in self.commands:
+                print(f"{counter}. {command}")
+                counter += 1
+            print("\n")
+            command = int(input("What do you want to do with picture (enter num): "))
             exec(f"self.{self.commands[command - 1]}()")
+            print("\n")
 
 
 
