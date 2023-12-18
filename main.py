@@ -8,7 +8,7 @@ run = True
 class Program():
 
     def __init__(self):
-        commands = ["black_and_white", "rotate", "stop"]
+        commands = ["black_and_white", "rotate", "resize", "stop"]
         self.commands = commands
         files = []
         print("Wellcome to ACFE!")
@@ -51,6 +51,13 @@ class Program():
                 rotated = im.transpose(Image.ROTATE_270)
         rotated.save(f"{self.file.name}-{angles[int(command_angle) - 1]}.png")
         rotated.show()
+    
+
+    def resize(self):
+        im = Image.open(self.file.name)
+        im.thumbnail([1080, 1080])
+        im.save(f"{self.file.name}-1080.png")
+
 
 
     def mainloop(self):
