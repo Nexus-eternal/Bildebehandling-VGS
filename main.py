@@ -2,11 +2,14 @@ from PIL import Image
 import pilgram
 import os, sys
 
+# Added global variable to run while-loop
 global run
 run = True
 
+#Defining Programm class
 class Program():
 
+# Initializing ogject of class
     def __init__(self):
         commands = ["black_and_white", "rotate", "resize", "add_filter", "polaroiid_frame", "exit"]
         self.commands = commands
@@ -15,6 +18,7 @@ class Program():
         print("Wellcome to ACFE! (Amazing Consoll Foto Editor)")
         print("Choose the picture you want to edit:" + "\n")
         counter = 1
+        # Starting loop to tell all options
         for file in os.scandir('.'):
             if file.is_file() and file.path.split(".")[-1].lower() in ['png','jpg','jpeg']:
                 if file.name not in exceptions:
@@ -26,65 +30,78 @@ class Program():
         file = files[int(file)-1]
         self.file = file
 
+        self.im = Image.open(self.file.name)
+
+
+# Exit function
     def exit(self):
+        # Canseling  loop
         run = False
+        # Exits programm
         sys.exit()
 
 
+# Oppgave B
     def black_and_white(self):
-        im = Image.open(self.file.name)
-        pilgram.moon(im).save(f'{self.file.name}-moon.png')
+        # Saving edited file
+        pilgram.moon(self.im).save(f'{self.file.name}-b&w.png')
 
 
+# Oppgave C
     def rotate(self):
         angles = ["90", "180", "270"]
-        im = Image.open(self.file.name)
         print("How will you rotate picture?")
         counter = 1
+        # Starting loop to tell all options
         for angle in angles:
             print(f"{counter}. {angle}")
             counter += 1
-        
+
+# Match-case structure (Better then if-elif to compare 1 parameter)        
         command_angle = input("Choose angle (enter num): ")
         match command_angle:
             case "1":
-                rotated = im.transpose(Image.ROTATE_90)
+                rotated = self.im.transpose(Image.ROTATE_90)
             case "2":
-                rotated = im.transpose(Image.ROTATE_180)
+                rotated = self.im.transpose(Image.ROTATE_180)
             case "3":
-                rotated = im.transpose(Image.ROTATE_270)
+                rotated = self.im.transpose(Image.ROTATE_270)
+        # Saving edited file
         rotated.save(f"{self.file.name}-{angles[int(command_angle) - 1]}.png")
     
 
+# Oppgave D
     def resize(self):
-        im = Image.open(self.file.name)
-        im.thumbnail([1080, 1080])
-        im.save(f"{self.file.name}-1080.png")
+        self.im.thumbnail([1080, 1080])
+        # Saving edited file
+        self.im.save(f"{self.file.name}-1080.png")
     
 
+# Oppgave A + F
     def add_filter(self):
         examples = Image.open("examples.png")
-        im = Image.open(self.file.name)
         examples.show()
         choosen_filter = input("Choose filter you would like to use: ")
+        # Saving edited file
         exec(f"pilgram.{choosen_filter}(im).save(f'{self.file.name}-{choosen_filter}.png')")
 
     
+# Oppgave G
     def polaroiid_frame(self):
-        im = Image.open(self.file.name)
-        if im.size >= (760, 760):
-            im = im.crop((0,0,760, 760))
+        if self.im.size >= (760, 760):
+            im = self.im.crop((0,0,760, 760))
         frame = Image.open("polaroid-frame.png")
         frame.paste(im, (64,64))
+        # Saving edited file
         frame.save(f"{self.file.name}-polaroid.png")
 
 
-
+# Mainloop to run
     def mainloop(self):
-        run = True
         while run:
             print("What do you want to do with picture?")
             counter = 1
+            # Starting loop to tell all options
             for command in self.commands:
                 print(f"{counter}. {command}")
                 counter += 1
