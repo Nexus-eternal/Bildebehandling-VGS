@@ -8,7 +8,7 @@ run = True
 class Program():
 
     def __init__(self):
-        commands = ["black_and_white", "stop"]
+        commands = ["black_and_white", "rotate", "stop"]
         self.commands = commands
         files = []
         print("Wellcome to ACFE!")
@@ -31,6 +31,26 @@ class Program():
         im = Image.open(self.file.name)
         pilgram.moon(im).save(f'{self.file.name}-moon.jpg')
 
+
+    def rotate(self):
+        angles = ["90", "180", "270"]
+        im = Image.open(self.file.name)
+        print("How will you rotate picture?")
+        counter = 1
+        for angle in angles:
+            print(f"{counter}. {angle}")
+            counter += 1
+        
+        command_angle = input("Choose angle: ")
+        match command_angle:
+            case "1":
+                rotated = im.transpose(Image.ROTATE_90)
+            case "2":
+                rotated = im.transpose(Image.ROTATE_180)
+            case "3":
+                rotated = im.transpose(Image.ROTATE_270)
+        rotated.save(f"{self.file.name}-{angles[int(command_angle) - 1]}.png")
+        rotated.show()
 
 
     def mainloop(self):
