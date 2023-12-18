@@ -8,7 +8,7 @@ run = True
 class Program():
 
     def __init__(self):
-        commands = ["black_and_white", "rotate", "resize", "stop"]
+        commands = ["black_and_white", "rotate", "resize", "add_filter", "stop"]
         self.commands = commands
         files = []
         print("Wellcome to ACFE!")
@@ -17,7 +17,8 @@ class Program():
         for file in os.scandir('.'):
             if file.is_file() and file.path.split(".")[-1].lower() in ['png','jpg','jpeg']:
                 files.append(file)
-                print(f'{counter}. {file.name}')
+                if file.name != "examples.png":
+                    print(f'{counter}. {file.name}')
                 counter += 1
         print("\n")
         file = input("File you will work with: ")
@@ -27,9 +28,10 @@ class Program():
     def stop(self):
         run = False
 
+
     def black_and_white(self):
         im = Image.open(self.file.name)
-        pilgram.moon(im).save(f'{self.file.name}-moon.jpg')
+        pilgram.moon(im).save(f'{self.file.name}-moon.png')
 
 
     def rotate(self):
@@ -57,6 +59,14 @@ class Program():
         im = Image.open(self.file.name)
         im.thumbnail([1080, 1080])
         im.save(f"{self.file.name}-1080.png")
+    
+    
+    def add_filter(self):
+        examples = Image.open("examples.png")
+        im = Image.open(self.file.name)
+        examples.show()
+        choosen_filter = input("Choose filter you would like to use: ")
+        exec(f"pilgram.{choosen_filter}(im).save(f'{self.file.name}-{choosen_filter}.png')")
 
 
 
