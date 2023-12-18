@@ -88,7 +88,14 @@ class Program():
     
 # Oppgave G
     def polaroiid_frame(self):
-        if self.im.size >= (760, 760):
+        width, heigth = self.im.size
+        if width > heigth:
+            top_left_y = (heigth - 760)/2
+            top_left_x = (width - 760)/2
+            bottom_right_y = heigth -(heigth - 760)/2
+            bottom_right_x = width - (width - 760)/2
+            im = self.im.crop((top_left_x, top_left_y, bottom_right_x, bottom_right_y))
+        elif self.im.size >= (760, 760):
             im = self.im.crop((0,0,760, 760))
         frame = Image.open("polaroid-frame.png")
         frame.paste(im, (64,64))
