@@ -1,6 +1,6 @@
 from PIL import Image
 import pilgram
-import os
+import os, sys
 
 global run
 run = True
@@ -8,7 +8,7 @@ run = True
 class Program():
 
     def __init__(self):
-        commands = ["black_and_white", "rotate", "resize", "add_filter", "polaroiid_frame", "stop"]
+        commands = ["black_and_white", "rotate", "resize", "add_filter", "polaroiid_frame", "exit"]
         self.commands = commands
         files = []
         exceptions = ["examples.png", "polaroid-frame.png"]
@@ -26,8 +26,9 @@ class Program():
         file = files[int(file)-1]
         self.file = file
 
-    def stop(self):
+    def exit(self):
         run = False
+        sys.exit()
 
 
     def black_and_white(self):
@@ -74,7 +75,6 @@ class Program():
         im = Image.open(self.file.name)
         if im.size >= (760, 760):
             im = im.crop((0,0,760, 760))
-        im.show()
         frame = Image.open("polaroid-frame.png")
         frame.paste(im, (64,64))
         frame.save(f"{self.file.name}-polaroid.png")
