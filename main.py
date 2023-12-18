@@ -2,10 +2,13 @@ from PIL import Image
 import pilgram
 import os
 
+global run
+run = True
+
 class Program():
 
-    def __init__(self) -> None:
-        commands = []
+    def __init__(self):
+        commands = ["black_and_white", "stop"]
         self.commands = commands
         files = []
         print("Wellcome to ACFE!")
@@ -18,9 +21,17 @@ class Program():
                 counter += 1
         print("\n")
         file = input("File you will work with: ")
-        file = int(file)
-        file = files[file-1]
+        file = files[int(file)-1]
         self.file = file
+
+    def stop(self):
+        run = False
+
+    def black_and_white(self):
+        im = Image.open(self.file.name)
+        pilgram.moon(im).save(f'{self.file.name}-moon.jpg')
+
+
 
     def mainloop(self):
         run = True
@@ -28,10 +39,10 @@ class Program():
         counter = 1
         for command in self.commands:
             print(f"{counter}. {command}")
-        im = Image.open(self.file.name)
-        pilgram.moon(im).save(f'{self.file.name}-moon.jpg')
-
-
+            counter += 1
+        while run:
+            command = int(input("File you will work with: "))
+            exec(f"self.{self.commands[command - 1]}()")
 
 
 
