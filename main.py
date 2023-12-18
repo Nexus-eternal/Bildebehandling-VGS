@@ -83,7 +83,7 @@ class Program():
         examples.show()
         choosen_filter = input("Choose filter you would like to use: ")
         # Saving edited file
-        exec(f"pilgram.{choosen_filter}(im).save(f'{self.file.name}-{choosen_filter}.png')")
+        exec(f"pilgram.{choosen_filter}(self.im).save(f'{self.file.name}-{choosen_filter}.png')")
 
     
 # Oppgave G
