@@ -8,16 +8,17 @@ run = True
 class Program():
 
     def __init__(self):
-        commands = ["black_and_white", "rotate", "resize", "add_filter", "stop"]
+        commands = ["black_and_white", "rotate", "resize", "add_filter", "polaroiid_frame", "stop"]
         self.commands = commands
         files = []
+        exceptions = ["examples.png", "polaroid-frame.png"]
         print("Wellcome to ACFE!")
         print("Choose the picture you want to edit:" + "\n")
         counter = 1
         for file in os.scandir('.'):
             if file.is_file() and file.path.split(".")[-1].lower() in ['png','jpg','jpeg']:
                 files.append(file)
-                if file.name != "examples.png":
+                if file.name not in exceptions:
                     print(f'{counter}. {file.name}')
                 counter += 1
         print("\n")
@@ -60,13 +61,23 @@ class Program():
         im.thumbnail([1080, 1080])
         im.save(f"{self.file.name}-1080.png")
     
-    
+
     def add_filter(self):
         examples = Image.open("examples.png")
         im = Image.open(self.file.name)
         examples.show()
         choosen_filter = input("Choose filter you would like to use: ")
         exec(f"pilgram.{choosen_filter}(im).save(f'{self.file.name}-{choosen_filter}.png')")
+
+    
+    def polaroiid_frame(self):
+        im = Image.open(self.file.name)
+        if im.size >= (760, 760):
+            im = im.crop((0,0,760, 760))
+        im.show()
+        frame = Image.open("polaroid-frame.png")
+        frame.paste(im, (64,64))
+        frame.save(f"{self.file.name}-polaroid.png")
 
 
 
